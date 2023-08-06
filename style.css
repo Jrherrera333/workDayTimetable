@@ -29,9 +29,10 @@ body {
     color: #000000;
     border-top: 1px dashed #000000;
   }
+  /*colors for time blocks*/
   
   .past {
-    background-color: #d3d3d3;
+    background-color: #a69f9f;
     color: white;
   }
   

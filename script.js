@@ -1,68 +1,64 @@
-// Wrap all code that interacts with the DOM in a call to jQuery to ensure that
-// the code isn't run until the browser has finished rendering all the elements
-// in the html.
+//display the date//
+
 $(document).ready(function () {
     $("#currentDay").text(dayjs().format('dddd, MMMM D'));
 
+    //update time block colors, according to the hour//
+
     function updateColors() {
+        dayjs.locale('en');
         var currentHour = dayjs().hour();
+        console.log(dayjs().toString())
+     
         $(".time-block").each(function () {
-            var blockHour = parseInt($(this).attr("id").split("-")[1]);
-            if (blockHour < 9) blockHour += 12;
+            let blockHour = parseInt($(this).attr("id").split("-")[1]);
+          
+            if (blockHour >= 1 && blockHour <= 5) blockHour += 12;
 
             if (blockHour < currentHour) {
+                console.log("blockHour: "+blockHour+"currentHour: "+currentHour)
                 $(this).removeClass("present future").addClass("past");
             } else if (blockHour === currentHour) {
                 $(this).removeClass("past future").addClass("present");
             } else {
-                $(this).removeClass("past present").addClass("present");
+                $(this).removeClass("past present").addClass("future");
             }
         });
     } 
+//call the function updateColors()
 
     updateColors();
+
+    //set up an interval for the function updateColor every 6 second//
+
     setInterval(updateColors, 6000);
 
+    //retrieve data from local storage and display text in time block//
+
     $(".time-block").each(function () {
-        var id = $(this).attr("id");
-        var saveEvent = localStorage.getItem(id);
+        let id = $(this).attr("id");
+        let saveEvent = localStorage.getItem(id);
         if (saveEvent) {
-            $(this).find(".description").val(savedEvent);
+            $(this).find(".description").val(saveEvent);
         }
     });
 
+    //add the saving function to the button//
+
     $(".saveBtn").on("click", function () {
-        var timeBlock = $(this).parent();
-        var id = timeBlock.attr("id");
-        var eventText = timeBlock.find(".description").val();
+        let timeBlock = $(this).parent();
+        let id = timeBlock.attr("id");
+        let eventText = timeBlock.find(".description").val();
         localStorage.setItem(id, eventText);
     });
-});
-// let timeDisplayEl = $('#time-display');
 
-//     $(function displayTime() {
-//         let rightNow = dayjs().format('MMM DD, YYYY [at] hh:mm:ss a');
-//             timeDisplayEl.text(rightNow);
-//       }
-    // TODO: Add a listener for click events on the save button. This code should
-    // use the id in the containing time-block as a key to save the user input in
-    // local storage. HINT: What does `this` reference in the click listener
-    // function? How can DOM traversal be used to get the "hour-x" id of the
-    // time-block containing the button that was clicked? How might the id be
-    // useful when saving the description in local storage?
-    //
-    // localStorage()
-    // TODO: Add code to apply the past, present, or future class to each time
-    // block by comparing the id to the current hour. HINTS: How can the id
-    // attribute of each time-block be used to conditionally add or remove the
-    // past, present, and future classes? How can Day.js be used to get the
-    // current hour in 24-hour time?
-    //
-    // TODO: Add code to get any user input that was saved in localStorage and set
-    // the values of the corresponding textarea elements. HINT: How can the id
-    // attribute of each time-block be used to do this?
-    //
-    // TODO: Add code to display the current date in the header of the page.
-    // displayTime();
-    // setInterval(displayTime, 1000);
-  
+
+    //save the text to the local storage//
+    
+    $(".fa-save").on("click", function (){
+        let timeBlock = $(this).parent().parent();
+        let id = timeBlock.attr("id");
+        let eventText = timeBlock.find(".description").val();
+        localStorage.setItem(id, eventText);
+    })
+});
