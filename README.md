@@ -8,4 +8,4 @@
 ![time table](<time table.png>))
 
 ## here is a link to the application.
-## here is a link to the time table web: https://github.com/Jrherrera333/workDayTimetable
+## here is a link to the time table web:https://jrherrera333.github.io/workDayTimetable/
